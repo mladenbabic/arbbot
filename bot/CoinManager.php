@@ -194,7 +194,7 @@ class CoinManager {
               $confTime < Config::get( Config::MAX_MIN_CONFIRMATIONS_ALLOWED, Config::DEFAULT_MAX_MIN_CONFIRMATIONS_ALLOWED ) ) {
             $maxTradeSize = Config::get( Config::MAX_TRADE_SIZE, Config::DEFAULT_MAX_TRADE_SIZE );
             $balanceFactor = Config::get( Config::BALANCE_FACTOR, Config::DEFAULT_BALANCE_FACTOR );
-  
+
             $desiredBalance = formatBTC( $maxTradeSize / $averageRate * $balanceFactor );
             $diff = abs( $desiredBalance - $balance );
             // Only allow a diff if the need is fulfillable:
@@ -392,6 +392,10 @@ class CoinManager {
       $amount = min( $positiveExchanges[ $from ][ 'd' ], $negativeExchanges[ $to ][ 'd' ] );
       $source = $positiveExchanges[ $from ][ 'e' ];
       $target = $negativeExchanges[ $to ][ 'e' ];
+
+      if($amount == 0 ){
+        break;
+      }
 
       $this->withdraw( $source, $target, $coin, $amount );
 
