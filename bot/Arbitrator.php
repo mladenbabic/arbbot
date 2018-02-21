@@ -578,6 +578,10 @@ class Arbitrator {
 
       Database::saveTrade( $tradeable, $currency, $sellAmount, $source->getID(), $target->getID() );
 
+      //TODO: Mladen send push notification from here
+
+      PushServer::pushTrade(formatBTC( $currencyProfitLoss) );
+
       $this->coinManager->withdraw( $source, $target, $tradeable, $boughtAmount );
       break;
     }

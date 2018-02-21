@@ -6,6 +6,7 @@ require_once 'bot/Exchange.php';
 require_once 'bot/Arbitrator.php';
 require_once 'bot/TradeMatcher.php';
 
+
 require_once 'lib/composer/vendor/autoload.php';
 
 use React\EventLoop;
@@ -41,6 +42,7 @@ Database::handleAlertsUpgrade();
 Database::handleCoinUpgrade();
 
 Database::handleTrackUpgrade();
+
 
 if ( !Database::alertsTableExists() ) {
   logg( "Upgrading the database to create the separate alerts table" );
