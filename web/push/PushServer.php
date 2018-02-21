@@ -12,8 +12,8 @@ class PushServer
     public static function pushTrade($currencyProfitLoss = 0)
     {
 
-        $apiKey='';
-        $singleId = '';
+        $apiKey='AAAAnMmW96Q:APA91bEbv_emLowVlwbqP6bc32q2yZ8DNR_0-Qwj02XD4KLJXM08WryUVwiQrD96k2kubIG6uWnDolUVu6v1MNyKD39axMRyniUCDp1xXBmNAjXWhEYhqaEKpKqXyyhnA4cxTdg3ODxm';
+        $singleId = 'dn4y3zG_EL8:APA91bHpC9Atfi1k_ghipeFYskYAis8pTSWLLCvmtR_wSQkYJZVeHzBXx4EUcQr6fmvMm8BhOYD_Br0fkQNhlWPo1HomqWeP0cNOszFphq-6M6EOk7c5R1H98yqPW7n2CUjQmFfrMPAf';
 
         logg( 'Send a message to mobile to notify trader' );
         //logg(  sprintf( "Push message to mobile: %s , %s %.8f", $tradeable, $currency, formatBTC( $currencyProfitLoss) ));

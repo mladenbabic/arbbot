@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/CoinManager.php';
+require_once __DIR__ . '/../web/push/PushServer.php';
 
 class Arbitrator {
 
