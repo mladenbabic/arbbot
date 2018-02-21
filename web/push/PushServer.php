@@ -9,14 +9,18 @@
 class PushServer
 {
 
+    const API_KEY = 'push.api-key';
+    const SINGLE_DEVICE_ID = 'push.single-device-id';
+
+    private static $config = [];
+
     public static function pushTrade($currencyProfitLoss = 0)
     {
 
-        $apiKey='AAAAnMmW96Q:APA91bEbv_emLowVlwbqP6bc32q2yZ8DNR_0-Qwj02XD4KLJXM08WryUVwiQrD96k2kubIG6uWnDolUVu6v1MNyKD39axMRyniUCDp1xXBmNAjXWhEYhqaEKpKqXyyhnA4cxTdg3ODxm';
-        $singleId = 'dn4y3zG_EL8:APA91bHpC9Atfi1k_ghipeFYskYAis8pTSWLLCvmtR_wSQkYJZVeHzBXx4EUcQr6fmvMm8BhOYD_Br0fkQNhlWPo1HomqWeP0cNOszFphq-6M6EOk7c5R1H98yqPW7n2CUjQmFfrMPAf';
+        $apiKey   = self::get(PushServer::API_KEY, '');
+        $singleId = self::get(PushServer::SINGLE_DEVICE_ID, '');
 
-        logg( 'Send a message to mobile to notify trader' );
-        //logg(  sprintf( "Push message to mobile: %s , %s %.8f", $tradeable, $currency, formatBTC( $currencyProfitLoss) ));
+        logg('Send a message to mobile');
 
         $fcmMsg = array(
             'body'  => 'New trade is made with profit ' . $currencyProfitLoss,
@@ -33,7 +37,7 @@ class PushServer
             'to'           => $singleId,
             'priority'     => 'high',
             'notification' => $fcmMsg,
-            'data' => $fcmMsg,
+            'data'         => $fcmMsg,
         );
 
         $headers = array(
@@ -51,6 +55,50 @@ class PushServer
         $result = curl_exec($ch);
         curl_close($ch);
         echo $result . "\n\n";
+
+    }
+
+    public static function exists($key)
+    {
+
+        $value = self::get($key, null);
+        return !is_null($value) && strlen($value) > 0;
+
+    }
+
+    public static function get($key, $default = null)
+    {
+
+        self::refresh();
+
+        $config = self::$config;
+
+        $value = $config;
+        $keys  = explode('.', $key);
+        foreach ($keys as $k) {
+            if (!key_exists($k, $value)) {
+                return $default;
+            }
+            $value = $value[$k];
+        }
+        return $value;
+
+    }
+
+    public static function refresh($throwException = false)
+    {
+
+        $config = @parse_ini_file("config_fcm.ini", true);
+        if (!$config) {
+            // The web UI accesses the Config object from ../bot, so config.ini will
+            // be placed in the parent directory.
+            $config = @parse_ini_file("../config_fcm.ini", true);
+            if (!$config && $throwException) {
+                throw new Exception("Configuration not found or invalid!");
+            }
+        }
+        logg('Config data ' . $config[0]);
+        self::$config = $config;
 
     }
 
